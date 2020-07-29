@@ -1,0 +1,9 @@
+.bot{
+    background-color: rgb(137, 177, 223);
+    float: left;
+}
+
+.user{
+    background-color: rgb(181, 233, 175);
+    float: right;
+}
