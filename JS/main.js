@@ -51,7 +51,8 @@ getDate = () => {
 initializeOptions = () => {
     let options = [{
             number: 1,
-            choice: "Weather"
+            // choice: "Weather"
+            choice: "Netflix Movies"
         },
         {
             number: 2,
@@ -113,70 +114,79 @@ exit = () => {
     sendBtn.remove();
 }
 
-handleResponse = () => {
-    if (httpRequest.readyState === XMLHttpRequest.DONE) {
-        if (httpRequest.status === 200) {
-            let result = JSON.parse(httpRequest.responseText);
-            let city = result.location.name;
-            let state = result.location.region;
-            let temp = result.current.temperature;
-            let hum = result.current.humidity;
-            let wind = result.current.wind_speed;
-            let icon = result.current.weather_icons[0];
-            let weatherDetail = "<br>";
-            weatherDetail += "<span><img src='" + icon + "'></span>";
-            weatherDetail += "<br>";
-            weatherDetail += "Location: " + city + ", " + state;
-            weatherDetail += "<br>";
-            weatherDetail += "Temperature: " + (temp * (9/5) + 32).toFixed(2) + " °F";
-            weatherDetail += "<br>";
-            weatherDetail += "Humidity: " + hum;
-            weatherDetail += "<br>";
-            weatherDetail += "Wind Speed: " + wind;
-            setTimeout(function () {
-                chatbotSendMessage(weatherDetail);
-            }, 500);
-            setTimeout(function () {
-                repeatResponse();
-            }, 1000);
-        } else {
-            chatbotSendMessage("Something went wrong");
-        }
-    }
-}
+// handleResponse = () => {
+//     if (httpRequest.readyState === XMLHttpRequest.DONE) {
+//         if (httpRequest.status === 200) {
+//             let result = JSON.parse(httpRequest.responseText);
+//             let city = result.location.name;
+//             let state = result.location.region;
+//             let temp = result.current.temperature;
+//             let hum = result.current.humidity;
+//             let wind = result.current.wind_speed;
+//             let icon = result.current.weather_icons[0];
+//             let weatherDetail = "<br>";
+//             weatherDetail += "<span><img src='" + icon + "'></span>";
+//             weatherDetail += "<br>";
+//             weatherDetail += "Location: " + city + ", " + state;
+//             weatherDetail += "<br>";
+//             weatherDetail += "Temperature: " + (temp * (9/5) + 32).toFixed(2) + " °F";
+//             weatherDetail += "<br>";
+//             weatherDetail += "Humidity: " + hum;
+//             weatherDetail += "<br>";
+//             weatherDetail += "Wind Speed: " + wind;
+//             setTimeout(function () {
+//                 chatbotSendMessage(weatherDetail);
+//             }, 500);
+//             setTimeout(function () {
+//                 repeatResponse();
+//             }, 1000);
+//         } else {
+//             chatbotSendMessage("Something went wrong");
+//         }
+//     }
+// }
 
-getWeather = (lat, long) => {
-    httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = handleResponse;
-    httpRequest.open('GET', "http://api.weatherstack.com/current?access_key=d2ca3a18c5f86b6ce46b6d575dbdb94b&query=" + lat + ',' + long);
-    httpRequest.send();
-}
+// getWeather = (lat, long) => {
+//     httpRequest = new XMLHttpRequest();
+//     httpRequest.onreadystatechange = handleResponse;
+//     httpRequest.open('GET', "http://api.weatherstack.com/current?access_key=d2ca3a18c5f86b6ce46b6d575dbdb94b&query=" + lat + ',' + long);
+//     httpRequest.send();
+// }
 
-weatherLocation = () => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-            let lat = pos.coords.latitude;
-            let long = pos.coords.longitude;
-            getWeather(lat, long);
-        },
-        (err) => {
-            setTimeout(function () {
-                chatbotSendMessage("Location could not be accessed");
-            }, 500);
-            setTimeout(function () {
-                repeatResponse();
-            }, 1000);
-        });
-}
+// weatherLocation = () => {
+//     navigator.geolocation.getCurrentPosition((pos) => {
+//             let lat = pos.coords.latitude;
+//             let long = pos.coords.longitude;
+//             getWeather(lat, long);
+//         },
+//         (err) => {
+//             setTimeout(function () {
+//                 chatbotSendMessage("Location could not be accessed");
+//             }, 500);
+//             setTimeout(function () {
+//                 repeatResponse();
+//             }, 1000);
+//         });
+// }
 
 assistantResponse = (messageText) => {
     let choice = parseInt(messageText.trim());
     switch (choice) {
+        // case 1:
+            // setTimeout(function () {
+            //     chatbotSendMessage("Please allow the browser to access your location");
+            // }, 500);
+            // setTimeout(function () {
+            //     weatherLocation();
+            // }, 1000);
+            // break;
         case 1:
             setTimeout(function () {
-                chatbotSendMessage("Please allow the browser to access your location");
+                chatbotSendMessage("You chose Netflix Movies");
             }, 500);
             setTimeout(function () {
-                weatherLocation();
+                window.open('https://www.google.com/search?q=netflix-movies');
+                repeatResponse();
             }, 1000);
             break;
         case 2:
