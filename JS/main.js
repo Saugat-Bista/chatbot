@@ -8,9 +8,30 @@ var lastMsg = {
 var httpRequest;
 var count = 0;
 
-initializeOptions();
+chatbotSendMessage = (messageText) => {
 
-function getDate(){
+    var messageElement = document.createElement('div');
+    messageElement.classList.add('w-100');
+    messageElement.classList.add('float-left');
+    messageElement.style.margin = "10px";
+    messageElement.style.padding = "5px";
+
+    messageElement.innerHTML = "<span class=" + "bot" + "><span style=" + "padding-left:5px" + ">Chatbot: </span>" +
+        "<span style=" + "margin-top:10px" + ";" + "padding:10px" + ">" + messageText + "</span></span>";
+
+    messageElement.animate([{
+        easing: "ease-in",
+        opacity: 0.4
+    }, {
+        opacity: 1
+    }], {
+        duration: 1000
+    });
+    chatContainer.appendChild(messageElement);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+getDate = () => {
     var date = new Date();
     var day = date.getDay(); //0-6
     var month = date.getMonth(); //0-11
@@ -27,7 +48,7 @@ function getDate(){
     return dayArray[day] + ", " + monthArray[month] + " " + dayOfMonth + " " + hour + ":" + minute;
 }
 
-function initializeOptions() {
+initializeOptions = () => {
     let options = [{
             number: 1,
             choice: "Weather"
@@ -65,7 +86,9 @@ function initializeOptions() {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function repeatResponse() {
+initializeOptions();
+
+repeatResponse = () => {
     count++;
     chatbotSendMessage("Continue?");
     var messageElement = document.createElement('div');
@@ -76,13 +99,13 @@ function repeatResponse() {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function restart() {
+restart = () => {
     initializeOptions();
     document.getElementById('yes['+count+']').disabled = true;
     document.getElementById('no['+count+']').disabled = true;
 }
 
-function exit() {
+exit = () => {
     chatbotSendMessage("Have a good day");
     document.getElementById('yes['+count+']').disabled = true;
     document.getElementById('no['+count+']').disabled = true;
@@ -90,7 +113,7 @@ function exit() {
     sendBtn.remove();
 }
 
-function handleResponse() {
+handleResponse = () => {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
             let result = JSON.parse(httpRequest.responseText);
@@ -122,14 +145,14 @@ function handleResponse() {
     }
 }
 
-function getWeather(lat, long) {
+getWeather = (lat, long) => {
     httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = handleResponse;
     httpRequest.open('GET', "http://api.weatherstack.com/current?access_key=d2ca3a18c5f86b6ce46b6d575dbdb94b&query=" + lat + ',' + long);
     httpRequest.send();
 }
 
-function weatherLocation() {
+weatherLocation = () => {
     navigator.geolocation.getCurrentPosition((pos) => {
             let lat = pos.coords.latitude;
             let long = pos.coords.longitude;
@@ -145,7 +168,7 @@ function weatherLocation() {
         });
 }
 
-function assistantResponse(messageText) {
+assistantResponse = (messageText) => {
     let choice = parseInt(messageText.trim());
     switch (choice) {
         case 1:
@@ -184,30 +207,7 @@ function assistantResponse(messageText) {
     }
 }
 
-function chatbotSendMessage(messageText) {
-
-    var messageElement = document.createElement('div');
-    messageElement.classList.add('w-100');
-    messageElement.classList.add('float-left');
-    messageElement.style.margin = "10px";
-    messageElement.style.padding = "5px";
-
-    messageElement.innerHTML = "<span class=" + "bot" + "><span style=" + "padding-left:5px" + ">Chatbot: </span>" +
-        "<span style=" + "margin-top:10px" + ";" + "padding:10px" + ">" + messageText + "</span></span>";
-
-    messageElement.animate([{
-        easing: "ease-in",
-        opacity: 0.4
-    }, {
-        opacity: 1
-    }], {
-        duration: 1000
-    });
-    chatContainer.appendChild(messageElement);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-function sendMessage(messageText) {
+sendMessage = (messageText) => {
 
     var messageElement = document.createElement('div');
     messageElement.classList.add('w-50');
@@ -231,7 +231,7 @@ function sendMessage(messageText) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function send(){
+send = () => {
 // sendBtn.addEventListener('click', function (e) {
     let messageText = textbox.value.trim();
     sendMessage(messageText);
